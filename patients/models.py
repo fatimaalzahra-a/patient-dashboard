@@ -5,7 +5,7 @@ from django.conf import settings
 
 # Create your models here.
 
-class ERVisits(models.Model):
+class ERVisit(models.Model):
     Triage = [(i, str(i)) for i in range(1, 6)]  # 1 (Critical) to 5 (Non-urgent)
 
     Section = [
@@ -63,7 +63,7 @@ class CommunicationEvent(models.Model):
     ]
 
     event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    visit = models.ForeignKey(ERVisits, on_delete=models.CASCADE, related_name='communications')
+    visit = models.ForeignKey(ERVisit, on_delete=models.CASCADE, related_name='communications')
     event_type = models.CharField(max_length=50, choices=Event, default='initial')
     event_ts = models.DateTimeField(auto_now_add=True)
     staff_role = models.CharField(max_length=20, choices=Roles)
@@ -81,7 +81,7 @@ class SatisfactionSignal(models.Model):
     Score = [(i, str(i)) for i in range(1, 6)]
 
     feedback_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    visit = models.ForeignKey(ERVisits, on_delete=models.CASCADE, related_name='signals')
+    visit = models.ForeignKey(ERVisit, on_delete=models.CASCADE, related_name='signals')
     overall_score = models.IntegerField(choices=Score, null=True, blank=True)
     waiting_score = models.IntegerField(choices=Score, null=True, blank=True)
     communication_score = models.IntegerField(choices=Score, null=True, blank=True)
@@ -143,8 +143,9 @@ class ExperienceFailureIndicator(models.Model):
     ]
 
     indicator_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    visit = models.OneToOneField(ERVisits, on_delete=models.CASCADE, related_name='failure_report')
+    visit = models.OneToOneField(ERVisit, on_delete=models.CASCADE, related_name='failure_report')
     lwbs = models.BooleanField(default=False)
+    time_to_first_contact = models.DurationField(null=True, blank=True)
     revisit_reason = models.CharField(max_length=50, choices=Revisit, null=True, blank=True)
     metadata = models.JSONField(default=dict, blank=True)
 

@@ -41,3 +41,6 @@ class UserAlert(models.Model):
     class Meta:
         unique_together = ('user', 'alert')
         indexes = [models.Index(fields=['user', 'is_read']),]
+
+    def __str__(self):
+        return self.alert.title

@@ -25,6 +25,8 @@ class UserProfile(models.Model):
     position = models.CharField(max_length=100, blank=True, null=True)
     metadata = models.JSONField(default=dict, blank=True)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.position})"
 
 class Permission(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -43,6 +45,9 @@ class Role(models.Model):
     metadate = models.JSONField(default=dict, blank=True)
 
     permissions = models.ManyToManyField(Permission, related_name='roles', through='RolePermission')
+
+    def __str__(self):
+        return self.name
 
 
 class RolePermission(models.Model):
