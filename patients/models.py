@@ -3,7 +3,7 @@ import uuid
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -34,7 +34,7 @@ class ERVisit(models.Model):
     ]
 
     visit_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    patient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+    patient = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
                                 related_name='er_visits')
     arrival_ts = models.DateTimeField(auto_now_add=True)
     triage_ts = models.DateTimeField(null=True, blank=True)

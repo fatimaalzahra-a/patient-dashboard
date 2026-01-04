@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User 
 
 
 # Create your models here.
@@ -33,7 +34,7 @@ class Alert(models.Model):
 
 
 class UserAlert(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_alerts')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_alerts')
     alert = models.ForeignKey(Alert, on_delete=models.CASCADE, related_name='recipients')
     is_read = models.BooleanField(default=False)
     read_at = models.DateTimeField(null=True, blank=True)

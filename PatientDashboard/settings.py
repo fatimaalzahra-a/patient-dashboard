@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-k^b!8d6x*s7^2t&*!p1lo^!=+mwqu!9l%s49&5gxtrtqea+u3z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["87.237.225.79", "localhost"]
 
 
 # Application definition
@@ -38,12 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'auth',
+    # 'account',
     'patients',
     'alerts',
 ]
-
-AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,10 +97,21 @@ WSGI_APPLICATION = 'PatientDashboard.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "app_db",
+        "USER": "app_user",
+        "PASSWORD": "strong_password",
+        # "HOST": "localhost",
+        "HOST": "87.237.225.79",
+        "PORT": "5432",
     }
 }
 
