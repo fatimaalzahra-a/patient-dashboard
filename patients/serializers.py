@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ERVisit, CommunicationEvent, SatisfactionSignal, ExperienceFailureIndicator
+from .models import ERVisit, CommunicationEvent, SatisfactionSignal, ExperienceFailureIndicator, ContextData
 
 
 class ERVisitSerializer(serializers.ModelSerializer):
@@ -19,6 +19,12 @@ class CommunicationEventSerializer(serializers.ModelSerializer):
 class SatisfactionSignalSerializer(serializers.ModelSerializer):
     class Meta:
         model = SatisfactionSignal
+        fields = '__all__'
+
+
+class ContextDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContextData
         fields = '__all__'
 
 

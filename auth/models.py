@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.apps import apps
 from django.contrib.auth.models import AbstractUser
 
 
@@ -8,6 +9,14 @@ class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True, null=True, blank=True)
     metadata = models.JSONField(default=dict, blank=True)
+
+    def get_custom_permissions(self):
+        PermissionModel = apps.get_model('auth', 'Permission')
+
+        # query using the related_name paths we built in your models
+        return set(PermissionModel.objects.filter(
+            roles__user_roles__user=self
+        ).values_list('name', flat=True))
 
 
 class UserProfile(models.Model):
@@ -27,6 +36,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.position})"
+
 
 class Permission(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -60,7 +70,7 @@ class RolePermission(models.Model):
 
 class UserRole(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_roles')
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role_assignment')
 
     class Meta:
         unique_together = ('user', 'role')

@@ -21,10 +21,10 @@ class Alert(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=150)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     level = models.CharField(max_length=10, choices=Levels, default='info')
     status = models.CharField(max_length=10, choices=Status, default='unread')
-    triggered_by = models.CharField(max_length=100)
+    triggered_by = models.CharField(max_length=100,)
     triggered_at = models.DateTimeField(auto_now_add=True)
     metadata = models.JSONField(default=dict, blank=True)
 

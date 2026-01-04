@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'user',
-                'verbose_name_plural': 'users',
+                'verbose_name_plural': 'auth',
                 'abstract': False,
             },
             managers=[
@@ -67,8 +67,8 @@ class Migration(migrations.Migration):
             name='RolePermission',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('permission', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.permission')),
-                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.role')),
+                ('permission', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.permission')),
+                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.role')),
             ],
             options={
                 'unique_together': {('role', 'permission')},
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='role',
             name='permissions',
-            field=models.ManyToManyField(related_name='roles', through='users.RolePermission', to='users.permission'),
+            field=models.ManyToManyField(related_name='roles', through='auth.RolePermission', to='auth.permission'),
         ),
         migrations.CreateModel(
             name='UserProfile',
@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
             name='UserRole',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.role')),
+                ('role', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='auth.role')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_roles', to=settings.AUTH_USER_MODEL)),
             ],
             options={
